@@ -23,7 +23,11 @@ iptables -A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 9200 -j ACCEPT
 iptables-save
 
+mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';use mysql;UPDATE mysql.user SET host='%' WHERE user='root';" -p$mysqlPassword
+
 mysql -u root -e "CREATE USER 'syncuser'@'%' IDENTIFIED BY '$replicaPassword';GRANT REPLICATION SLAVE ON *.* TO ' syncuser'@'%';" -p$mysqlPassword
+
+service mysql restart
 
 
 
