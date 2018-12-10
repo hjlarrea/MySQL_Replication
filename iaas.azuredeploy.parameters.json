@@ -38,6 +38,9 @@
         "artifactsLocation": {
             "value": "https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/scripts/install_mysql.sh"
         },
+        "scriptToExecute": {
+            "value": "install_mysql.sh"
+        },
         "mysqlPassword": {
             "value": "MyPassword_2"
         },

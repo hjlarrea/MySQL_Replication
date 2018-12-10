@@ -26,10 +26,7 @@
         "artifactsLocation": {
             "type": "string"
         },
-        "mysqlPassword": {
-            "type": "securestring"
-        },
-        "replicaPassword": {
+        "commandToExecute": {
             "type": "securestring"
         }
     },
@@ -121,7 +118,7 @@
                 ]
               },
               "protectedSettings": {
-                "commandToExecute": "[concat('bash install_mysql_server_5.6.sh ', parameters('mysqlPassword'), ' ', parameters('replicaPassword'))]"
+                "commandToExecute": "[parameters('commandToExecute')]"
               }
             }
         }

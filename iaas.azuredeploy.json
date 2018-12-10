@@ -38,6 +38,9 @@
         "artifactsLocation": {
             "type": "string"
         },
+        "scriptToExecute": {
+            "type": "string"
+        },
         "mysqlPassword": {
             "type": "securestring"
         },
@@ -49,7 +52,8 @@
         "location": "[resourceGroup().location]",
         "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "pipRef": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+        "pipRef": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]",
+        "commandToExecute": "[concat('bash ', parameters('scriptToExecute'), ' ' ,parameters('mysqlPassword'), ' ', parameters('replicaPassword'))]"
     },
     "resources": [
         {
@@ -165,11 +169,8 @@
                     "artifactsLocation": {
                         "value": "[parameters('artifactsLocation')]"
                     },
-                    "mysqlPassword": {
-                        "value": "[parameters('mysqlPassword')]"
-                    },
-                    "replicaPassword": {
-                        "value": "[parameters('replicaPassword')]"
+                    "commandToExecute": {
+                        "value": "[variables('commandToExecute')]"
                     }
                 }
             }
