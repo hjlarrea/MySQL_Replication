@@ -27,10 +27,6 @@
     "variables": {},
     "resources": [
         {
-            "condition": "[greater(parameters('numberOfReplicas'),0)]",
-            "dependsOn": [
-                "[parameters('sourceServerId')]"
-            ],
             "copy": {
                 "name": "replicasLoop",
                 "count": "[if(equals(parameters('numberOfReplicas'),0),add(parameters('numberOfReplicas'),1),parameters('numberOfReplicas'))]",
