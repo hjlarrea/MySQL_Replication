@@ -79,7 +79,10 @@
         },
         "enableAzureResources": {
             "type": "bool",
-            "defaultValue": true
+            "defaultValue": true,
+            "metadata": {
+                "description": "Enable Azure hosted resources to access the master instance."
+            }
         },
         "backupRetentionDays": {
             "type": "int",
@@ -116,62 +119,83 @@
     },
     "resources": [
         {
-            "type": "Microsoft.DBforMySQL/servers",
-            "sku": "[variables('sku')]",           
-            "kind": "",
-            "name": "[parameters('serverName')]",
-            "apiVersion": "2017-12-01-preview",
-            "location": "[variables('location')]",
+            "apiVersion": "2017-05-10",
+            "name": "MySQLServer",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
-                "version": "[parameters('version')]",
-                "administratorLogin": "[parameters('administratorLogin')]",
-                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
-                "storageProfile": {
-                    "storageMB": "[variables('sku').size]",
-                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
-                }
-            },
-            "resources": [
-                {
-                    "condition": "[parameters('enableAzureResources')]",
-                    "apiVersion": "2017-12-01-preview",
-                    "type": "firewallRules",
-                    "location": "[variables('location')]",
-                    "name": "AllowAzureResources",
-                    "properties": {
-                        "startIpAddress": "0.0.0.0",
-                        "endIpAddress": "0.0.0.0"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/nested/mysql.json"
+                },
+                "parameters": {
+                    "sku": {
+                        "value": "[variables('sku')]"
                     },
-                    "dependsOn": [
-                        "[variables('sourceServerId')]"
-                    ]
+                    "serverName": {
+                        "value": "[parameters('serverName')]"
+                    },
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "version": {
+                        "value": "[parameters('version')]"
+                    },
+                    "administratorLogin": {
+                        "value": "[parameters('administratorLogin')]"
+                    },
+                    "administratorLoginPassword": {
+                        "value": "[parameters('administratorLoginPassword')]"
+                    },
+                    "backupRetentionDays": {
+                        "value": "[parameters('backupRetentionDays')]"
+                    },
+                    "geoRedundantBackup": {
+                        "value": "[parameters('geoRedundantBackup')]"
+                    },
+                    "enableAzureResources": {
+                        "value": "[parameters('enableAzureResources')]"
+                    },
+                    "ServerId": {
+                        "value": "[variables('sourceServerId')]"
+                    }
                 }
-            ]
+            }
         },
         {
+            "apiVersion": "2017-05-10",
+            "name": "MySQLServerReplicas",
+            "type": "Microsoft.Resources/deployments",
             "condition": "[greater(parameters('numberOfReplicas'),0)]",
             "dependsOn": [
-                "[variables('sourceServerId')]"
+                "MySQLServer"
             ],
-            "copy": {
-                "name": "replicasLoop",
-                "count": "[if(equals(parameters('numberOfReplicas'),0),add(parameters('numberOfReplicas'),1),parameters('numberOfReplicas'))]",
-                "mode": "serial"
-            },
-            "type": "Microsoft.DBforMySQL/servers",
-            "sku": "[variables('sku')]", 
-            "kind": "",
-            "name": "[concat(parameters('serverName'),'-',add(copyIndex(),1))]",
-            "apiVersion": "2017-12-01-preview",
-            "location": "[variables('location')]",
             "properties": {
-                "createMode": "Replica",
-                "sourceServerId": "[variables('sourceServerId')]",
-                "storageProfile": {
-                    "storageMB": "[variables('sku').size]",
-                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/nested/mysqlReplica.json"
+                },
+                "parameters": {
+                    "sku": {
+                        "value": "[variables('sku')]"
+                    },
+                    "serverName": {
+                        "value": "[parameters('serverName')]"
+                    },
+                    "location": {
+                        "value": "[variables('location')]"
+                    },
+                    "numberOfReplicas": {
+                        "value": "[parameters('numberOfReplicas')]"
+                    },
+                    "backupRetentionDays": {
+                        "value": "[parameters('backupRetentionDays')]"
+                    },
+                    "geoRedundantBackup": {
+                        "value": "[parameters('geoRedundantBackup')]"
+                    },
+                    "sourceServerId": {
+                        "value": "[variables('sourceServerId')]"
+                    }
                 }
             }
         }

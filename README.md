@@ -1,1 +1,5 @@
-#Experiment / Work in progress
+# MySQL PaaS Replication
+
+## Full PaaS solution (paas.azuredeploy.json)
+
+## Hybrid solution
