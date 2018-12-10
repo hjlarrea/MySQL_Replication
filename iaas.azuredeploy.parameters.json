@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "networkSecurityGroupName": {
+            "value": "NSG01"
+        },
+        "virtualNetworkName": {
+            "value": "VNet02"
+        },
+        "addressPrefix": {
+            "value": "10.0.0.0/24"
+        },
+        "subnetName": {
+            "value": "Subnet01"
+        },
+        "publicIpAddressName": {
+            "value": "PIP01"
+        },
+        "publicIpAddressType": {
+            "value": "Static"
+        },
+        "publicIpAddressSku": {
+            "value": "Basic"
+        },
+        "virtualMachineName": {
+            "value": "linuxvm01"
+        },
+        "adminUsername": {
+            "value": "myadmin"
+        },
+        "adminPassword": {
+            "value": "MyPassword_1"
+        },
+        "virtualMachineSize": {
+            "value": "Standard_B2ms"
+        },
+        "artifactsLocation": {
+            "value": "https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/scripts/install_mysql.sh"
+        },
+        "mysqlPassword": {
+            "value": "MyPassword_2"
+        },
+        "replicaPassword": {
+            "value": "MyPassword_3"
+        }
+    }
+}
