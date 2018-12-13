@@ -2,6 +2,10 @@
 
 mysqlPassword=$1
 replicaPassword=$2
+remoteAdmin=$3
+remotePassword=$4
+remoteServer=$5
+publicIpAddress=$6
 
 apt-get update
 
@@ -27,7 +31,13 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';use mysql;UP
 
 mysql -u root -e "CREATE USER 'syncuser'@'%' IDENTIFIED BY '$replicaPassword';GRANT REPLICATION SLAVE ON *.* TO ' syncuser'@'%';" -p$mysqlPassword
 
+binLog= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-bin | awk '{print $2}'
+position= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-bin | awk '{print $2}'
 service mysql restart
+
+mysql -u $remoteAdmin -h $remoteServer -e "CALL mysql.az_replication_change_master('$publicIpAddress', 'syncuser', '$replicaPassword', 3306, '$binLog', $position, '');CALL mysql.az_replication_start;" -p$remotePassword
+
+
 
 
 
