@@ -27,7 +27,7 @@
             "type": "string"
         },
         "commandToExecute": {
-            "type": "securestring"
+            "type": "string"
         }
     },
     "variables": {
