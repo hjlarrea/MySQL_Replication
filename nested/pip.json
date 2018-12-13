@@ -31,5 +31,11 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "PIPDetails": 
+        {
+            "type": "object",
+            "value": "[reference(parameters('publicIpAddressName'))]"
+        }
+    }
 }
