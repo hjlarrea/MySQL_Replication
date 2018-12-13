@@ -27,7 +27,7 @@
             "type": "string"
         },
         "commandToExecute": {
-            "type": "string"
+            "type": "securestring"
         }
     },
     "variables": {
@@ -81,7 +81,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(parameters('virtualMachineName'),'-disk0')]",
+                        "name": "[concat(parameters('virtualMachineName'),'-disk01')]",
                         "createOption": "fromImage",
                         "diskSizeGB": 64,
                         "managedDisk": {

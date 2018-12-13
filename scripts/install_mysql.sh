@@ -35,32 +35,4 @@ binLog= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-
 position= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-bin | awk '{print $2}'
 service mysql restart
 
-mysql -u $remoteAdmin@$remoteServer -h $remoteServer -e "CALL mysql.az_replication_change_master('$publicIpAddress', 'syncuser', '$replicaPassword', 3306, '$binLog', $position, '');CALL mysql.az_replication_start;" -p$remotePassword
-
-
-
-
-
-
-
-
-
-#set the password
-#sudo mysqladmin -u root password "$mysqlPassword"   #without -p means here the initial password is empty
-
-#alternative update mysql root password method
-#sudo mysql -u root -e "set password for 'root'@'localhost' = PASSWORD('$mysqlPassword')"
-#without -p here means the initial password is empty
-
-#sudo service mysql restart
-
-#iptables -A INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
-#    iptables -A INPUT -p tcp -m tcp --dport 9200 -j ACCEPT
-#    iptables-save
-#}
-#
-#disable_apparmor_ubuntu() {
-#    /etc/init.d/apparmor stop
-#    /etc/init.d/apparmor teardown
-#    update-rc.d -f apparmor remove
-#    apt-get remove apparmor apparmor-utils -y
+mysql -u $remoteAdmin@$remoteServer -h $remoteServer -e "CALL mysql.az_replication_change_master('$publicIpAddress', 'syncuser', '$replicaPassword', 3306, '$binLog', '$position', ' ');CALL mysql.az_replication_start;" -p$remotePassword
