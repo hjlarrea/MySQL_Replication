@@ -123,5 +123,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "VMDetails": {
+            "type": "object",
+            "value": "[reference(parameters('virtualMachineName'))]"
+        }
+    }
 }
