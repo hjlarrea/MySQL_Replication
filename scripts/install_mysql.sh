@@ -35,7 +35,7 @@ binLog= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-
 position= mysql -u root -e "show master status;" -p$mysqlPassword | grep -i mysql-bin | awk '{print $2}'
 service mysql restart
 
-mysql -u $remoteAdmin -h $remoteServer -e "CALL mysql.az_replication_change_master('$publicIpAddress', 'syncuser', '$replicaPassword', 3306, '$binLog', $position, '');CALL mysql.az_replication_start;" -p$remotePassword
+mysql -u $remoteAdmin@$remoteServer -h $remoteServer -e "CALL mysql.az_replication_change_master('$publicIpAddress', 'syncuser', '$replicaPassword', 3306, '$binLog', $position, '');CALL mysql.az_replication_start;" -p$remotePassword
 
 
 
