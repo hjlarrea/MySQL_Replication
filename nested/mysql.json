@@ -70,5 +70,10 @@
             ]
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "MySQLDetails": {
+            "type": "object",
+            "value": "[reference(parameters('serverName'))]"
+        }
+    }
 }
