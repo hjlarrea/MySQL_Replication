@@ -2,50 +2,86 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "networkSecurityGroupName": {
+        "NSG_Name": {
             "value": "NSG01"
         },
-        "virtualNetworkName": {
-            "value": "VNet02"
+        "VNet_Name": {
+            "value": "VNet01"
         },
-        "addressPrefix": {
+        "VNet_addressPrefix": {
             "value": "10.0.0.0/24"
         },
-        "subnetName": {
+        "VNet_subnetName": {
             "value": "Subnet01"
         },
-        "publicIpAddressName": {
+        "PIP_Name": {
             "value": "PIP01"
         },
-        "publicIpAddressType": {
+        "PIP_Type": {
             "value": "Static"
         },
-        "publicIpAddressSku": {
+        "PIP_Sku": {
             "value": "Basic"
         },
-        "virtualMachineName": {
+        "VM_Name": {
             "value": "linuxvm01"
         },
-        "adminUsername": {
+        "VM_Admin": {
             "value": "myadmin"
         },
-        "adminPassword": {
+        "VM_AdminPassword": {
             "value": "MyPassword_1"
         },
-        "virtualMachineSize": {
+        "VM_Size": {
             "value": "Standard_B2ms"
         },
-        "artifactsLocation": {
+        "VM_artifactsLocation": {
             "value": "https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/scripts/install_mysql.sh"
         },
-        "scriptToExecute": {
+        "VM_scriptToExecute": {
             "value": "install_mysql.sh"
         },
-        "mysqlPassword": {
+        "VM_MySQLRootPassword": {
             "value": "MyPassword_2"
         },
-        "replicaPassword": {
+        "VM_MySQLReplicaPassword": {
             "value": "MyPassword_3"
+        },
+        "MySQL_ServerName": {
+            "value": "mysqlreplicatarget01"
+        },
+        "MySQL_Location": {
+            "value": "westus2"
+        },
+        "MySQL_Version": {
+            "value": "5.7"
+        },
+        "MySQL_SKUTier": {
+            "value": "GeneralPurpose"
+        },
+        "MySQL_vCPU": {
+            "value": 2
+        },
+        "MySQL_SKUSize": {
+            "value": 5120
+        },
+        "MySQL_SKUFamily": {
+            "value": "Gen5"
+        },
+        "MySQL_Admin": {
+            "value": "myadmin"
+        },
+        "MySQL_AdminPassword": {
+            "value": "MyPassword_4"
+        },
+        "MySQL_BackupRetentionDays": {
+            "value": 7
+        },
+        "MySQL_GeoRedundantBackup": {
+            "value": "Disabled"
+        },
+        "MySQL_EnableAzureResources": {
+            "value": true
         }
     }
 }

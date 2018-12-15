@@ -2,60 +2,265 @@
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "networkSecurityGroupName": {
-            "type": "string"
+        "NSG_Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Network Security Group to be created."
+            }
         },
-        "virtualNetworkName": {
-            "type": "string"
+        "VNet_Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Virtual Network to be created."
+            }
         },
-        "addressPrefix": {
-            "type": "string"
+        "VNet_addressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Virtual Network address prefix."
+            }
         },
-        "subnetName": {
-            "type": "string"
+        "VNet_subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Subnet to be created in the Virtual Network."
+            }
         },
-        "publicIpAddressName": {
-            "type": "string"
+        "PIP_Name": {
+            "type": "string",
+            "metadata": {
+                "Description": "Name of the Public IP to be created."
+            }
         },
-        "publicIpAddressType": {
-            "type": "string"
+        "PIP_Type": {
+            "type": "string",
+            "defaultValue": "Static",
+            "metadata": {
+                "Description": "Type of the public IP to be created."
+            }
         },
-        "publicIpAddressSku": {
-            "type": "string"
+        "PIP_Sku": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ],
+            "defaultValue": "Basic",
+            "metadata": {
+                "description": "SKU of the Public IP to be created."
+            }
         },
-        "virtualMachineName": {
-            "type": "string"
+        "VM_Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Virtual Machine to be created."
+            }
         },
-        "adminUsername": {
-            "type": "string"
+        "VM_Admin": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Admin user to be created on the Virtual Machine."
+            }
         },
-        "adminPassword": {
-            "type": "securestring"
+        "VM_AdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Admin user to be created on the Virtual Machine."
+            }
         },
-        "virtualMachineSize": {
-            "type": "string"
+        "VM_Size": {
+            "type": "string",
+            "defaultValue": "Standard_B2ms",
+            "metadata": {
+                "description": "Virtual Machine size for the VM to be created."
+            }
         },
-        "artifactsLocation": {
-            "type": "string"
+        "VM_artifactsLocation": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/scripts/install_mysql.sh",
+            "metadata": {
+                "description": "Location or path of where to located the configuration script."
+            }
         },
-        "scriptToExecute": {
-            "type": "string"
+        "VM_scriptToExecute": {
+            "type": "string",
+            "defaultValue": "install_mysql.sh",
+            "metadata": {
+                "description": "Script to be executed as part of the configuration of the Virtual Machine."
+            }
         },
-        "mysqlPassword": {
-            "type": "securestring"
+        "VM_MySQLRootPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the 'root' user of the MySQL instance to be installed on the Virtual Machine."
+            }
         },
-        "replicaPassword": {
-            "type": "securestring"
+        "VM_MySQLReplicaPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the 'syncuser' user to be created in the MySQL instance to be installed on the Virtual Machine."
+            }
+        },
+        "MySQL_ServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_Location": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the MySQL Server (PaaS) to be created, this should be different from the Resource Group location."
+            }
+        },
+        "MySQL_Version": {
+            "type": "string",
+            "allowedValues": [
+                "5.6",
+                "5.7"
+            ],
+            "defaultValue": "5.7",
+            "metadata": {
+                "description": "Name of the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_SKUTier": {
+            "type": "string",
+            "defaultValue": "GeneralPurpose",
+            "allowedValues": [
+                "Basic",
+                "GeneralPurpose",
+                "MemoryOptimized"
+            ],
+            "metadata": {
+                "description": "Performance tier for the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_vCPU": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Number of vCPUs for the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_SKUSize": {
+            "type": "int",
+            "defaultValue": 5120,
+            "minValue": 5120,
+            "metadata": {
+                "description": "Storage capacity (in Mega Bytes) for the MySQL Server (PaaS) to be created ."
+            }
+        },
+        "MySQL_SKUFamily": {
+            "type": "string",
+            "allowedValues": [
+                "Gen4",
+                "Gen5"
+            ],
+            "defaultValue": "Gen5",
+            "metadata": {
+                "description": "Hardware generation for the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_Admin": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Admin user to be created on the MySQL Server (PaaS)."
+            }
+        },
+        "MySQL_AdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Admin user to be created on the MySQL Server (PaaS)."
+            }
+        },
+        "MySQL_BackupRetentionDays": {
+            "type": "int",
+            "defaultValue": 7,
+            "minvalue": 7,
+            "maxvalue": 35,
+            "metadata": {
+                "description": "Backup retention period for the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_GeoRedundantBackup": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Enabled",
+                "Disabled"
+            ],
+            "metadata": {
+                "description": "Enable or disable geo redundant backups for the MySQL Server (PaaS) to be created."
+            }
+        },
+        "MySQL_EnableAzureResources": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Enable Azure hosted resources to access the MySQL Server (PaaS) to be created."
+            }
         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "pipRef": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]",
-        "commandToExecute": "[concat('bash ', parameters('scriptToExecute'), ' ' ,parameters('mysqlPassword'), ' ', parameters('replicaPassword'))]"
+        "MySQL_SKUName": "[concat(if(equals(parameters('MySQL_SKUTier'),'GeneralPurpose'),'GP',if(equals(parameters('MySQL_SKUTier'),'Basic'),'B',if(equals(parameters('MySQL_SKUTier'),'MemoryOptimized'),'MO',''))),'_',parameters('MySQL_SKUFamily'),'_',parameters('MySQL_vCPU'))]",
+        "MySQL_SKU": {
+            "name": "[variables('MySQL_SKUName')]",
+            "tier": "[parameters('MySQL_SKUTier')]",
+            "capacity": "[parameters('MySQL_vCPU')]",
+            "size": "[parameters('MySQL_SKUSize')]",
+            "family": "[parameters('MySQL_SKUFamily')]"
+        },
+        "MySQL_SourceServerId": "[resourceId(resourceGroup().name, 'Microsoft.DBforMySQL/servers', parameters('MySQL_ServerName'))]",
+        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('VNet_Name'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('VNet_subnetName'))]",
+        "pipRef": "[resourceId(resourceGroup().name,'Microsoft.Network/publicIpAddresses', parameters('PIP_Name'))]"
     },
     "resources": [
+        {
+            "apiVersion": "2017-05-10",
+            "name": "MySQLServer",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri":"https://raw.githubusercontent.com/hjlarrea/MySQL_Replication/master/nested/mysql.json"
+                },
+                "parameters": {
+                    "sku": {
+                        "value": "[variables('MySQL_SKU')]"
+                    },
+                    "serverName": {
+                        "value": "[parameters('MySQL_ServerName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('MySQL_Location')]"
+                    },
+                    "version": {
+                        "value": "[parameters('MySQL_Version')]"
+                    },
+                    "administratorLogin": {
+                        "value": "[parameters('MySQL_Admin')]"
+                    },
+                    "administratorLoginPassword": {
+                        "value": "[parameters('MySQL_AdminPassword')]"
+                    },
+                    "backupRetentionDays": {
+                        "value": "[parameters('MySQL_BackupRetentionDays')]"
+                    },
+                    "geoRedundantBackup": {
+                        "value": "[parameters('MySQL_GeoRedundantBackup')]"
+                    },
+                    "enableAzureResources": {
+                        "value": "[parameters('MySQL_EnableAzureResources')]"
+                    },
+                    "ServerId": {
+                        "value": "[variables('MySQL_SourceServerId')]"
+                    }
+                }
+            }
+        },
         {
             "apiVersion": "2017-05-10",
             "name": "NSG",
@@ -67,7 +272,7 @@
                 },
                 "parameters": {
                     "networkSecurityGroupName": {
-                        "value": "[parameters('networkSecurityGroupName')]"
+                        "value": "[parameters('NSG_Name')]"
                     },
                     "location": {
                         "value": "[variables('location')]"
@@ -89,19 +294,19 @@
                 },
                 "parameters": {
                     "virtualNetworkName": {
-                        "value": "[parameters('virtualNetworkName')]"
+                        "value": "[parameters('VNet_Name')]"
                     },
                     "location": {
                         "value": "[variables('location')]"
                     },
                     "addressPrefix": {
-                        "value": "[parameters('addressPrefix')]"
+                        "value": "[parameters('VNet_addressPrefix')]"
                     },
                     "subnetName": {
-                        "value": "[parameters('subnetName')]"
+                        "value": "[parameters('VNet_subnetName')]"
                     },
                     "networkSecurityGroupName": {
-                        "value": "[parameters('networkSecurityGroupName')]"
+                        "value": "[parameters('NSG_Name')]"
                     }
                 }
             }
@@ -120,13 +325,13 @@
                         "value": "[variables('location')]" 
                     },
                     "publicIpAddressName": {
-                        "value": "[parameters('publicIpAddressName')]"
+                        "value": "[parameters('PIP_Name')]"
                     },
                     "publicIpAddressType": {
-                        "value": "[parameters('publicIpAddressType')]"
+                        "value": "[parameters('PIP_Type')]"
                     },
                     "publicIpAddressSku": {
-                        "value": "[parameters('publicIpAddressSku')]"
+                        "value": "[parameters('PIP_Sku')]"
                     }
                 }
             }
@@ -136,6 +341,7 @@
             "name": "LinuxVM",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
+                "MySQLServer",
                 "PIP",
                 "Vnet"
             ],
@@ -149,13 +355,13 @@
                         "value": "[variables('location')]"
                     },
                     "virtualMachineName": {
-                        "value": "[parameters('virtualMachineName')]"
+                        "value": "[parameters('VM_Name')]"
                     },
                     "adminUsername": {
-                        "value": "[parameters('adminUsername')]"
+                        "value": "[parameters('VM_Admin')]"
                     },
                     "adminPassword": {
-                        "value": "[parameters('adminPassword')]"
+                        "value": "[parameters('VM_AdminPassword')]"
                     },
                     "subnetRef": {
                         "value": "[variables('subnetRef')]"
@@ -164,13 +370,13 @@
                         "value": "[variables('pipRef')]"
                     },
                     "virtualMachineSize": {
-                        "value": "[parameters('virtualMachineSize')]"
+                        "value": "[parameters('VM_Size')]"
                     },
                     "artifactsLocation": {
-                        "value": "[parameters('artifactsLocation')]"
+                        "value": "[parameters('VM_artifactsLocation')]"
                     },
                     "commandToExecute": {
-                        "value": "[variables('commandToExecute')]"
+                        "value": "[concat('bash ', parameters('VM_scriptToExecute'), ' ' , parameters('VM_MySQLRootPassword'), ' ', parameters('VM_MySQLReplicaPassword'), ' ', parameters('MySQL_Admin'), ' ', parameters('MySQL_AdminPassword'), ' ', reference('MySQLServer').outputs.MySQLDetails.value.fullyQualifiedDomainName, ' ', reference('PIP').outputs.PIPDetails.value.ipAddress)]"
                     }
                 }
             }
