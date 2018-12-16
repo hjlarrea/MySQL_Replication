@@ -9,11 +9,17 @@ Both implementations have their parameters fully documented and are accompanied 
 
 ## Full PaaS solution (paas.azuredeploy.json)
 
-This ARM template will deploy only MySQL PaaS instances. Depending on the information provided it might deploy from 1 to 6 instances. In the case of deploying only 1 (a master and 0 copies) and SQL Instance will be created and no read only copies will be deployed. Any other combination will deploy a master MySQL PaaS instance and between 1 to 5 read only replicas.
+This ARM template will deploy only MySQL PaaS instances. Depending on the information provided it might deploy from 1 to 6 instances. In the case of deploying only 1 (a master and 0 copies) and SQL Instance will be created and no read only copies will be deployed. Any other combination will deploy a master MySQL PaaS instance and between 1 to 5 read only replicas. All of them will be deployed whihthin the same region and resource group.
 
 ![image](/docs/img01.png)
 
 This implementation is based on what is described in [Read replicas in Azure Database for MySQL](https://docs.microsoft.com/en-us/azure/mysql/concepts-read-replicas)
+
+To deploy this using PowerShell:
+```powershell
+New-AzureRMResourceGroup -Name "MySQLPaaS" -Location eastus
+New-AzureRmResourceGroupDeployment -ResourceGroupName "MySQLPaaS" -TemplateParameterFile .\paas.azuredeploy.parameters.json -TemplateFile .\paas.azuredeploy.json
+```
 
 ## Hybrid solution (iaas.azuredeploy.json)
 
@@ -31,6 +37,12 @@ The VM as part of the deployment will execute a custom script extension which wi
 All the components (PIP, NSG, VNET and VM) will be deployed in the same location as the resource group. While the MySQL PaaS server will be deployed in the indicated location (preferably a different one than the RG's), but whithin the same RG.
 
 This implementation is based on what is described in [How to configure Azure Database for MySQL Data-in Replication](https://docs.microsoft.com/en-us/azure/mysql/howto-data-in-replication)
+
+To deploy this using PowerShell:
+```powershell
+New-AzureRMResourceGroup -Name "MySQLIaaS" -Location eastus
+New-AzureRmResourceGroupDeployment -ResourceGroupName "MySQLIaaS" -TemplateParameterFile .\iaas.azuredeploy.parameters.json -TemplateFile .\iaas.azuredeploy.json
+```
 
 **IMPORTANT:** This configuration has been created as a POC, it has been written with a security-focused mindset. If you are planning to deploy this on a production environment I recommend you to:
 - Change ports for internet exposed services and review NSG configuration.
