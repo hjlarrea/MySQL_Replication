@@ -21,6 +21,14 @@ New-AzureRMResourceGroup -Name "MySQLPaaS" -Location eastus
 New-AzureRmResourceGroupDeployment -ResourceGroupName "MySQLPaaS" -TemplateParameterFile .\paas.azuredeploy.parameters.json -TemplateFile .\paas.azuredeploy.json
 ```
 
+### How to connect to the services deployed
+
+Use this command line to connect to the MySQL PaaS instances, if using the CloudShell no additional steps will be required. But if connecting from somewhere else you might need to add your IP to the MySQL firewall ([Configure Firewall Rules](https://docs.microsoft.com/en-us/azure/mysql/howto-manage-firewall-using-portal)):
+
+```bash
+mysql -h <fqdnOfTheMySQLInstance> -u <userCreatedForTheMySQLInstance>@<fqdnOfTheMySQLInstance> -p
+```
+
 ## Hybrid solution (iaas.azuredeploy.json)
 
 This ARM template will deploy:
@@ -42,6 +50,26 @@ To deploy this using PowerShell:
 ```powershell
 New-AzureRMResourceGroup -Name "MySQLIaaS" -Location eastus
 New-AzureRmResourceGroupDeployment -ResourceGroupName "MySQLIaaS" -TemplateParameterFile .\iaas.azuredeploy.parameters.json -TemplateFile .\iaas.azuredeploy.json
+```
+
+### How to connect to the services deployed
+
+To connect via SSH to the VM deployed:
+
+```bash
+ssh <userCreatedForTheVM>@<publicIPAssignedToTheVM>
+```
+
+To connect to the MySQL instance running on the VM:
+
+```bash
+mysql -u root -h <publicIPAssignedToTheVM> -p
+```
+
+Use this command line to connect to the MySQL PaaS instances, if using the CloudShell no additional steps will be required. But if connecting from somewhere else you might need to add your IP to the MySQL firewall ([Configure Firewall Rules](https://docs.microsoft.com/en-us/azure/mysql/howto-manage-firewall-using-portal)):
+
+```bash
+mysql -h <fqdnOfTheMySQLInstance> -u <userCreatedForTheMySQLInstance>@<fqdnOfTheMySQLInstance> -p
 ```
 
 **IMPORTANT:** This configuration has been created as a POC, it has been written with a security-focused mindset. If you are planning to deploy this on a production environment I recommend you to:
