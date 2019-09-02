@@ -72,7 +72,7 @@ Use this command line to connect to the MySQL PaaS instances, if using the Cloud
 mysql -h <fqdnOfTheMySQLInstance> -u <userCreatedForTheMySQLInstance>@<fqdnOfTheMySQLInstance> -p
 ```
 
-**IMPORTANT:** This configuration has been created as a POC, it has been written with a security-focused mindset. If you are planning to deploy this on a production environment I recommend you to:
+**IMPORTANT:** This configuration has been created as a POC, it has not been written with a security-focused mindset. If you are planning to deploy this on a production environment I recommend you to:
 - Change ports for internet exposed services and review NSG configuration.
 - Use certificates for MySQL Replication
 - Review the Linux configuration script and the IP Tables and App Armor configurations
